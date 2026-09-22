@@ -1,26 +1,87 @@
 @import "tailwindcss";
 
+@theme {
+  --color-bg: #0a0d10;
+  --color-surface: #10151a;
+  --color-surface2: #161c22;
+  --color-border: #212a32;
+  --color-borderHover: #2e3944;
+  --color-text: #e7eaee;
+  --color-muted: #8b96a3;
+  --color-muted2: #576270;
+  --color-signal: #45d6c2;
+  --color-amber: #e8a548;
+  --color-danger: #dd6a5f;
+
+  --font-display: var(--display-font), sans-serif;
+  --font-sans: var(--body-font), sans-serif;
+  --font-mono: var(--data-font), monospace;
+
+  --animate-blink: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0a0d10;
+  color: #e7eaee;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: #45d6c2;
+  color: #0a0d10;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0d10;
+}
+::-webkit-scrollbar-thumb {
+  background: #212a32;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2e3944;
+}
+
+.grid-noise {
+  background-image:
+    linear-gradient(to right, #ffffff04 1px, transparent 1px),
+    linear-gradient(to bottom, #ffffff04 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #45d6c2;
+  outline-offset: 3px;
+  border-radius: 4px;
 }
