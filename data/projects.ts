@@ -18,6 +18,7 @@ export const projects: Project[] = [
     description:
       "SaaS platform for managing contractors and subcontractors in construction and engineering companies — covering contracts, work orders, payments and compliance tracking end to end.",
     github: "https://github.com/MikaRudovskyi/contractiq",
+    live: "https://contractiq-kappa.vercel.app/",
     featured: true,
     image: "/projects/contractiq.png",
     demoNote:
@@ -89,6 +90,7 @@ export const projects: Project[] = [
     description:
       "Full-stack personal finance management application with budgets, savings goals, multi-currency support and financial reporting.",
     github: "https://github.com/MikaRudovskyi/finflow",
+    live: "https://finflow-sable.vercel.app",
     image: "/projects/finflow.png",
     demoNote:
       "The storefront is live, but the backend runs on a free-tier server that goes to sleep when idle — the first request after inactivity can take up to a minute to respond.",

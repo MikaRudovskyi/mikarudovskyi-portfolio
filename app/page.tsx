@@ -10,6 +10,7 @@ import Telecom from "@/components/sections/Telecom";
 import Architecture from "@/components/sections/Architecture";
 import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
+import MatrixRain from "@/components/ui/MatrixRain";
 
 export default function Home() {
   return (
@@ -17,15 +18,18 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
-        <About />
-        <Experience />
-        <Education />
-        <Languages />
-        <TechStack />
-        <Telecom />
-        <Architecture />
-        <Projects />
-        <Contact />
+        <div className="relative">
+          <MatrixRain />
+          <About />
+          <Experience />
+          <Education />
+          <Languages />
+          <TechStack />
+          <Telecom />
+          <Architecture />
+          <Projects />
+          <Contact />
+        </div>
       </main>
       <Footer />
     </>

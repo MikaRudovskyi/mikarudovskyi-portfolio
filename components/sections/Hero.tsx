@@ -20,13 +20,21 @@ const STATUS = [
 
 export default function Hero() {
   const [visibleLines, setVisibleLines] = useState(0);
+  const [cycle, setCycle] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (visibleLines >= BOOT_LINES.length) return;
-    const id = setTimeout(() => setVisibleLines((v) => v + 1), 420);
-    return () => clearTimeout(id);
-  }, [visibleLines]);
+    if (visibleLines < BOOT_LINES.length) {
+      const id = setTimeout(() => setVisibleLines((v) => v + 1), 420);
+      return () => clearTimeout(id);
+    } else {
+      const id = setTimeout(() => {
+        setVisibleLines(0);
+        setCycle((c) => c + 1);
+      }, 4200);
+      return () => clearTimeout(id);
+    }
+  }, [visibleLines, cycle]);
 
   return (
     <section

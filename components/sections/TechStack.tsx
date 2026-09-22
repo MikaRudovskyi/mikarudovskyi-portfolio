@@ -1,8 +1,47 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { techStack, designTools } from "@/data/techstack";
+
+function TechBadge({ item }: { item: string }) {
+  const [scanned, setScanned] = useState(false);
+
+  return (
+    <motion.span
+      key={item}
+      onMouseEnter={() => setScanned(true)}
+      onMouseLeave={() => setScanned(false)}
+      animate={
+        scanned
+          ? { scale: [1, 1.08, 1] }
+          : { scale: 1 }
+      }
+      transition={{ duration: 0.25 }}
+      className={`relative rounded border px-2.5 py-1 text-xs font-mono cursor-default select-none transition-colors duration-150 ${
+        scanned
+          ? "border-signal/50 bg-signal/10 text-signal"
+          : "border-border bg-surface2 text-muted"
+      }`}
+      style={
+        scanned
+          ? { textShadow: "0 0 8px var(--color-signal)", boxShadow: "0 0 10px 1px color-mix(in srgb, var(--color-signal) 25%, transparent)" }
+          : undefined
+      }
+    >
+      {scanned && (
+        <motion.span
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-signal"
+          initial={{ scaleX: 0, opacity: 0.8 }}
+          animate={{ scaleX: [0, 1, 1, 0], opacity: [0.8, 1, 1, 0], top: ["0%", "0%", "100%", "100%"] }}
+          transition={{ duration: 0.4, ease: "linear" }}
+        />
+      )}
+      {item}
+    </motion.span>
+  );
+}
 
 export default function TechStack() {
   return (
@@ -25,12 +64,7 @@ export default function TechStack() {
               </p>
               <div className="flex flex-wrap gap-2">
                 {cat.items.map((item) => (
-                  <span
-                    key={item}
-                    className="rounded border border-border bg-surface2 px-2.5 py-1 text-xs font-mono text-muted"
-                  >
-                    {item}
-                  </span>
+                  <TechBadge key={item} item={item} />
                 ))}
               </div>
             </motion.div>
@@ -48,12 +82,7 @@ export default function TechStack() {
             </p>
             <div className="flex flex-wrap gap-2">
               {designTools.items.map((item) => (
-                <span
-                  key={item}
-                  className="rounded border border-border bg-surface2 px-2.5 py-1 text-xs font-mono text-muted2"
-                >
-                  {item}
-                </span>
+                <TechBadge key={item} item={item} />
               ))}
             </div>
           </motion.div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import CyberCursor from "@/components/ui/CyberCursor";
+import MatrixRain from "@/components/ui/MatrixRain";
 import "./globals.css";
 
 const display = Space_Grotesk({

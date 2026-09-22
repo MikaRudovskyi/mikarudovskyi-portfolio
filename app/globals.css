@@ -270,3 +270,17 @@ button:focus-visible {
   white-space: nowrap;
   text-shadow: 0 0 4px color-mix(in srgb, var(--color-signal) 60%, transparent);
 }
+
+.hud-cursor-dot,
+.hud-cursor-ring-wrap,
+.hud-cursor-coords {
+  pointer-events: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hud-cursor-dot,
+  .hud-cursor-ring-wrap,
+  .hud-cursor-coords {
+    display: none !important;
+  }
+}

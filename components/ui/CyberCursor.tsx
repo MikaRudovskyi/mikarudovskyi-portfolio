@@ -13,6 +13,8 @@ export default function CyberCursor() {
   const rafId = useRef<number | null>(null);
 
   useEffect(() => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
     function setVisible(v: boolean) {
       const val = v ? "1" : "0";
       if (dotRef.current) dotRef.current.style.opacity = val;
