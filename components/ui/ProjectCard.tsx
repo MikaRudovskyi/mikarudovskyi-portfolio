@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Github, ExternalLink } from "lucide-react";
+import { Github, ExternalLink, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/data/projects";
 
@@ -9,6 +10,10 @@ export default function ProjectCard({ project }: { project: Project }) {
   const cardClass = project.featured
     ? "flex flex-col overflow-hidden rounded-lg border bg-surface transition-colors border-signal/40 md:col-span-2 bg-gradient-to-b from-surface to-surface2"
     : "flex flex-col overflow-hidden rounded-lg border bg-surface transition-colors border-border hover:border-borderHover";
+
+  const imageSizes = project.featured
+    ? "(min-width: 1024px) 1120px, 100vw"
+    : "(min-width: 1024px) 544px, 100vw";
 
   return (
     <motion.div
@@ -29,6 +34,17 @@ export default function ProjectCard({ project }: { project: Project }) {
             Featured
           </span>
         )}
+      </div>
+
+      <div className="relative w-full overflow-hidden border-b border-border bg-surface2 aspect-[1920/907]">
+        <Image
+          src={project.image}
+          alt={`${project.name} screenshot`}
+          fill
+          sizes={imageSizes}
+          quality={90}
+          className="object-cover object-top"
+        />
       </div>
 
       <div className="flex flex-1 flex-col p-6 md:p-7">
@@ -70,6 +86,13 @@ export default function ProjectCard({ project }: { project: Project }) {
             <span>GitHub</span>
           </a>
         </div>
+
+        {project.demoNote && (
+          <p className="mt-4 flex items-start gap-2 text-xs text-muted2 leading-relaxed">
+            <AlertCircle size={14} className="mt-0.5 shrink-0 text-amber" />
+            <span>{project.demoNote}</span>
+          </p>
+        )}
       </div>
     </motion.div>
   );

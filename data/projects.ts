@@ -7,6 +7,8 @@ export type Project = {
   featured?: boolean;
   tech: string[];
   features: string[];
+  image: string;
+  demoNote?: string;
 };
 
 export const projects: Project[] = [
@@ -17,6 +19,9 @@ export const projects: Project[] = [
       "SaaS platform for managing contractors and subcontractors in construction and engineering companies — covering contracts, work orders, payments and compliance tracking end to end.",
     github: "https://github.com/MikaRudovskyi/contractiq",
     featured: true,
+    image: "/projects/contractiq.png",
+    demoNote:
+      "No public demo at the moment — the project runs on free-tier hosting and database, which isn't kept running continuously. Full source, business logic and architecture are available on GitHub.",
     tech: [
       "React",
       "TypeScript",
@@ -36,13 +41,14 @@ export const projects: Project[] = [
       "Rate limiting, restricted CORS, bcrypt hardening",
     ],
   },
-    {
+  {
     slug: "shizen",
     name: "SHIZEN",
     description:
       "A React + TypeScript web experience dedicated to exploring Japan's cities, culture and history, with a cinematic, research-driven design system.",
     github: "https://github.com/MikaRudovskyi/shizen",
     live: "https://shizen-ten.vercel.app/",
+    image: "/projects/shizen.png",
     tech: [
       "React",
       "TypeScript",
@@ -66,6 +72,9 @@ export const projects: Project[] = [
       "Full-stack e-commerce application for NAVI-branded clothing and accessories, with a complete storefront and checkout flow.",
     github: "https://github.com/MikaRudovskyi/ClothingStore",
     live: "https://navi-clothingstore.netlify.app",
+    image: "/projects/navi.png",
+    demoNote:
+      "No public demo at the moment — the project runs on a free-tier database and hosting plan, which aren't kept active continuously. GitHub has the full implementation.",
     tech: ["React", "styled-components", "i18next", "Node.js", "Express.js", "MongoDB"],
     features: [
       "Product catalog with detail views and image zoom",
@@ -80,6 +89,9 @@ export const projects: Project[] = [
     description:
       "Full-stack personal finance management application with budgets, savings goals, multi-currency support and financial reporting.",
     github: "https://github.com/MikaRudovskyi/finflow",
+    image: "/projects/finflow.png",
+    demoNote:
+      "The storefront is live, but the backend runs on a free-tier server that goes to sleep when idle — the first request after inactivity can take up to a minute to respond.",
     tech: [
       "React 18",
       "Vite",
