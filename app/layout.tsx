@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import CyberCursor from "@/components/ui/CyberCursor";
 import "./globals.css";
 
 const display = Space_Grotesk({
@@ -53,7 +54,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
-      <body className="font-sans bg-bg text-text antialiased">{children}</body>
+      <body className="font-sans bg-bg text-text antialiased cursor-none">
+        {children}
+        <div className="crt-lines" />
+        <CyberCursor />
+      </body>
     </html>
   );
 }

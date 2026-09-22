@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import CyberScanline from "@/components/ui/CyberScanline";
 
 const BOOT_LINES = [
   "loading profile: mykhailo_rudovskyi",
@@ -19,6 +20,7 @@ const STATUS = [
 
 export default function Hero() {
   const [visibleLines, setVisibleLines] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (visibleLines >= BOOT_LINES.length) return;
@@ -27,11 +29,17 @@ export default function Hero() {
   }, [visibleLines]);
 
   return (
-    <section id="top" className="relative flex min-h-screen items-center border-b border-border grid-noise">
-      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-32 w-full lg:grid-cols-[1.2fr_1fr] lg:items-center">
+    <section
+      id="top"
+      ref={sectionRef}
+      className="relative flex min-h-screen items-center overflow-hidden border-b border-border grid-noise"
+    >
+      <CyberScanline containerRef={sectionRef} />
+
+      <div className="relative z-10 mx-auto grid max-w-6xl gap-12 px-6 py-32 w-full lg:grid-cols-[1.2fr_1fr] lg:items-center">
         <div>
           <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="font-display text-4xl md:text-6xl font-semibold tracking-tight text-text">
-            Mykhailo Rudovskyi
+            <span className="glitch-name" data-scan-target>Mykhailo Rudovskyi</span>
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }} className="mt-4 text-lg md:text-xl text-muted">
@@ -39,10 +47,10 @@ export default function Hero() {
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="mt-10 flex flex-wrap gap-4">
-            <a href="#projects" className="rounded-md bg-signal px-6 py-3 text-sm font-medium text-bg hover:bg-signal/90 transition-colors">
+            <a href="#projects" data-scan-target className="rounded-md bg-signal px-6 py-3 text-sm font-medium text-bg hover:bg-signal/90 transition-colors">
               View projects
             </a>
-            <a href="#contact" className="rounded-md border border-border px-6 py-3 text-sm font-medium text-text hover:border-borderHover hover:bg-surface transition-colors">
+            <a href="#contact" data-scan-target className="rounded-md border border-border px-6 py-3 text-sm font-medium text-text hover:border-borderHover hover:bg-surface transition-colors">
               Get in touch
             </a>
           </motion.div>
@@ -57,17 +65,41 @@ export default function Hero() {
               ))}
             </div>
 
-            <div className="flex items-center gap-3 rounded-md border border-border bg-surface/60 px-4 py-3 max-w-sm">
-              <span className="font-mono text-xs text-muted2 shrink-0">live signal</span>
+            <div data-scan-target className="flex items-center gap-3 rounded-md border border-border bg-surface/60 px-4 py-3 max-w-sm">
+              <span className="flex items-center gap-1.5 font-mono text-xs text-muted2 shrink-0">
+                <span className="signal-dot h-1.5 w-1.5 rounded-full bg-signal" />
+                live signal
+              </span>
               <svg viewBox="0 0 200 24" className="h-6 flex-1 text-signal" preserveAspectRatio="none">
+                <defs>
+                  <filter id="signalGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="1.4" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+
                 <motion.path
                   d="M0,12 H20 L24,4 L28,20 L32,12 H70 L74,6 L78,18 L82,12 H120 L124,3 L128,21 L132,12 H170 L174,6 L178,18 L182,12 H200"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="1.5"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 0.85 }}
+                  opacity="0.28"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
                   transition={{ duration: 1.8, ease: "easeInOut", delay: 0.6 }}
+                />
+
+                <path
+                  d="M0,12 H20 L24,4 L28,20 L32,12 H70 L74,6 L78,18 L82,12 H120 L124,3 L128,21 L132,12 H170 L174,6 L178,18 L182,12 H200"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeDasharray="35 500"
+                  filter="url(#signalGlow)"
+                  className="signal-pulse"
                 />
               </svg>
             </div>
@@ -75,7 +107,7 @@ export default function Hero() {
         </div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="rounded-lg border border-border bg-surface overflow-hidden">
-          <div className="flex items-center gap-1.5 border-b border-border px-4 py-3">
+          <div data-scan-target className="flex items-center gap-1.5 border-b border-border px-4 py-3">
             <span className="h-2.5 w-2.5 rounded-full bg-danger/60" />
             <span className="h-2.5 w-2.5 rounded-full bg-amber/60" />
             <span className="h-2.5 w-2.5 rounded-full bg-signal/60" />

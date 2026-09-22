@@ -5,11 +5,12 @@ import { motion } from "framer-motion";
 import { Github, ExternalLink, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/data/projects";
+import HudCorners from "@/components/ui/HudCorners";
 
 export default function ProjectCard({ project }: { project: Project }) {
   const cardClass = project.featured
-    ? "flex flex-col overflow-hidden rounded-lg border bg-surface transition-colors border-signal/40 md:col-span-2 bg-gradient-to-b from-surface to-surface2"
-    : "flex flex-col overflow-hidden rounded-lg border bg-surface transition-colors border-border hover:border-borderHover";
+    ? "group relative flex flex-col overflow-hidden rounded-lg border bg-surface transition-colors neon-border-signal md:col-span-2 bg-gradient-to-b from-surface to-surface2"
+    : "group relative flex flex-col overflow-hidden rounded-lg border bg-surface transition-colors border-border hover:border-borderHover";
 
   const imageSizes = project.featured
     ? "(min-width: 1024px) 1120px, 100vw"
@@ -23,6 +24,8 @@ export default function ProjectCard({ project }: { project: Project }) {
       transition={{ duration: 0.5 }}
       className={cn(cardClass)}
     >
+      <HudCorners />
+
       <div className="flex items-center gap-1.5 border-b border-border px-5 py-2.5">
         <span className="h-2 w-2 rounded-full bg-danger/50" />
         <span className="h-2 w-2 rounded-full bg-amber/50" />
@@ -43,7 +46,7 @@ export default function ProjectCard({ project }: { project: Project }) {
           fill
           sizes={imageSizes}
           quality={90}
-          className="object-cover object-top"
+          className="object-cover object-top transition-[filter] duration-300 group-hover:[filter:drop-shadow(2px_0_0_rgba(255,46,122,0.55))_drop-shadow(-2px_0_0_rgba(69,214,194,0.55))]"
         />
       </div>
 
@@ -76,7 +79,7 @@ export default function ProjectCard({ project }: { project: Project }) {
 
         <div className="flex flex-wrap gap-3 mt-auto">
           {project.live ? (
-            <a href={project.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md bg-signal px-4 py-2 text-sm font-medium text-bg hover:bg-signal/90 transition-colors">
+            <a href={project.live} target="_blank" rel="noopener noreferrer" className="neon-btn inline-flex items-center gap-2 rounded-md bg-signal px-4 py-2 text-sm font-medium text-bg hover:bg-signal/90 transition-colors">
               <ExternalLink size={15} />
               <span>Live demo</span>
             </a>

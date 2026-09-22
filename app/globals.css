@@ -10,6 +10,7 @@
   --color-muted: #8b96a3;
   --color-muted2: #576270;
   --color-signal: #45d6c2;
+  --color-magenta: #ff2e7a;
   --color-amber: #e8a548;
   --color-danger: #dd6a5f;
 
@@ -84,4 +85,188 @@ button:focus-visible {
   outline: 2px solid #45d6c2;
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* === Cyberpunk scanline: variable-speed, manual/inertia driven === */
+
+.scanline-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.scan-beam-wrap {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  top: 0;
+  height: 0;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.scan-line-main {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1.5px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-signal) 35%,
+    #ffffff 50%,
+    var(--color-magenta) 65%,
+    transparent
+  );
+  filter: blur(0.5px);
+  box-shadow:
+    0 0 8px 2px color-mix(in srgb, var(--color-signal) 70%, transparent),
+    0 0 24px 6px color-mix(in srgb, var(--color-magenta) 35%, transparent);
+}
+
+.scan-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #ffffff;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 6px 2px color-mix(in srgb, var(--color-signal) 95%, transparent),
+    0 0 18px 6px color-mix(in srgb, var(--color-magenta) 70%, transparent);
+  animation: scanCorePulse 1.6s ease-in-out infinite;
+}
+
+@keyframes scanCorePulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.75; }
+  50%      { transform: translate(-50%, -50%) scale(1.25); opacity: 1; }
+}
+
+.scan-line-secondary {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-signal) 50%, transparent);
+}
+
+.scan-line-sec-1 { top: -9px; opacity: 0.22; }
+.scan-line-sec-2 { top: -4px; opacity: 0.35; }
+.scan-line-sec-3 { top: 4px;  opacity: 0.35; background: linear-gradient(90deg, transparent, var(--color-magenta) 50%, transparent); }
+.scan-line-sec-4 { top: 9px;  opacity: 0.2;  background: linear-gradient(90deg, transparent, var(--color-magenta) 50%, transparent); }
+
+/* periodic full-width diagnostic flash */
+.scan-diagnostic .scan-line-main {
+  animation: scanDiagnosticFlash 0.65s ease-out;
+}
+.scan-diagnostic .scan-core {
+  animation: scanCorePulse 1.6s ease-in-out infinite, scanDiagnosticCore 0.65s ease-out;
+}
+
+@keyframes scanDiagnosticFlash {
+  0%   { height: 3px; box-shadow: 0 0 8px 2px color-mix(in srgb, var(--color-signal) 70%, transparent), 0 0 24px 6px color-mix(in srgb, var(--color-magenta) 35%, transparent); }
+  30%  { height: 5px; box-shadow: 0 0 26px 8px color-mix(in srgb, var(--color-signal) 100%, transparent), 0 0 70px 20px color-mix(in srgb, var(--color-magenta) 80%, transparent); }
+  100% { height: 3px; box-shadow: 0 0 8px 2px color-mix(in srgb, var(--color-signal) 70%, transparent), 0 0 24px 6px color-mix(in srgb, var(--color-magenta) 35%, transparent); }
+}
+
+@keyframes scanDiagnosticCore {
+  30% { transform: translate(-50%, -50%) scale(2); }
+}
+
+/* brief glitch highlight on UI elements the beam crosses */
+[data-scan-target].scan-glitch {
+  animation: scanTargetGlitch 0.22s steps(2, jump-none) 1;
+}
+
+@keyframes scanTargetGlitch {
+  0%   { filter: none; }
+  25%  { filter: brightness(1.4) saturate(1.3); text-shadow: -1px 0 var(--color-magenta), 1px 0 var(--color-signal); }
+  50%  { filter: brightness(1.1); }
+  100% { filter: none; }
+}
+
+/* === Live signal: traveling pulse along the waveform === */
+
+@keyframes signalPulse {
+  0%   { stroke-dashoffset: 520; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes signalDotPulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.85); }
+  50%      { opacity: 1; transform: scale(1.15); }
+}
+
+.signal-pulse {
+  animation: signalPulse 2.4s linear infinite;
+}
+
+.signal-dot {
+  animation: signalDotPulse 1.4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* === Cyberpunk HUD cursor === */
+
+@keyframes hudSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.hud-cursor-dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--color-signal);
+  will-change: transform;
+  transition: opacity 0.15s ease;
+  box-shadow:
+    0 0 6px 2px color-mix(in srgb, var(--color-signal) 90%, transparent),
+    0 0 16px 5px color-mix(in srgb, var(--color-magenta) 55%, transparent);
+}
+
+.hud-cursor-ring-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  will-change: transform;
+  transition: opacity 0.15s ease;
+}
+
+.hud-cursor-spin {
+  animation: hudSpin 6s linear infinite;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--color-signal) 60%, transparent));
+}
+
+.hud-cursor-tick {
+  position: absolute;
+  background: var(--color-signal);
+  box-shadow: 0 0 4px 1px color-mix(in srgb, var(--color-signal) 70%, transparent);
+}
+.hud-cursor-tick-t { top: -6px; left: 50%; width: 1px; height: 6px; transform: translateX(-50%); }
+.hud-cursor-tick-b { bottom: -6px; left: 50%; width: 1px; height: 6px; transform: translateX(-50%); }
+.hud-cursor-tick-l { left: -6px; top: 50%; width: 6px; height: 1px; transform: translateY(-50%); }
+.hud-cursor-tick-r { right: -6px; top: 50%; width: 6px; height: 1px; transform: translateY(-50%); background: var(--color-magenta); box-shadow: 0 0 4px 1px color-mix(in srgb, var(--color-magenta) 70%, transparent); }
+
+.hud-cursor-coords {
+  position: fixed;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  transition: opacity 0.15s ease;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--color-signal) 85%, transparent);
+  white-space: nowrap;
+  text-shadow: 0 0 4px color-mix(in srgb, var(--color-signal) 60%, transparent);
 }
