@@ -47,13 +47,30 @@ export default function Hero() {
             </a>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45 }} className="mt-12 flex flex-wrap gap-x-6 gap-y-2">
-            {STATUS.map((s) => (
-              <span key={s.label} className="flex items-center gap-2 text-sm text-muted">
-                <span className={s.tone === "signal" ? "h-1.5 w-1.5 rounded-full bg-signal" : "h-1.5 w-1.5 rounded-full bg-muted2"} />
-                {s.label}
-              </span>
-            ))}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45 }} className="mt-12">
+            <div className="flex flex-wrap gap-x-6 gap-y-2 mb-4">
+              {STATUS.map((s) => (
+                <span key={s.label} className="flex items-center gap-2 text-sm text-muted">
+                  <span className={s.tone === "signal" ? "h-1.5 w-1.5 rounded-full bg-signal" : "h-1.5 w-1.5 rounded-full bg-muted2"} />
+                  {s.label}
+                </span>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3 rounded-md border border-border bg-surface/60 px-4 py-3 max-w-sm">
+              <span className="font-mono text-xs text-muted2 shrink-0">live signal</span>
+              <svg viewBox="0 0 200 24" className="h-6 flex-1 text-signal" preserveAspectRatio="none">
+                <motion.path
+                  d="M0,12 H20 L24,4 L28,20 L32,12 H70 L74,6 L78,18 L82,12 H120 L124,3 L128,21 L132,12 H170 L174,6 L178,18 L182,12 H200"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 0.85 }}
+                  transition={{ duration: 1.8, ease: "easeInOut", delay: 0.6 }}
+                />
+              </svg>
+            </div>
           </motion.div>
         </div>
 
@@ -71,9 +88,7 @@ export default function Hero() {
                 {line}
               </p>
             ))}
-            {visibleLines < BOOT_LINES.length && (
-              <span className="inline-block h-4 w-2 bg-signal/70 animate-blink" />
-            )}
+            {visibleLines < BOOT_LINES.length && <span className="inline-block h-4 w-2 bg-signal/70 animate-blink" />}
           </div>
         </motion.div>
       </div>

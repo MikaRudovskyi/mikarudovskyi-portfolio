@@ -2,13 +2,21 @@
 
 import { motion } from "framer-motion";
 import SectionHeading from "@/components/ui/SectionHeading";
+import FlowLine from "@/components/ui/FlowLine";
 
 const PROTOCOLS = ["SIP", "RTP", "SMPP", "VoIP"];
 
-function Node({ label }: { label: string }) {
+function Node({ label, accent = false }: { label: string; accent?: boolean }) {
   return (
-    <div className="rounded-md border border-border bg-surface2 px-5 py-3 font-mono text-sm text-text text-center">
-      {label}
+    <div
+      className={
+        accent
+          ? "relative overflow-hidden rounded-md border border-signal/40 bg-signal/10 px-5 py-3 text-center"
+          : "relative overflow-hidden rounded-md border border-border bg-surface2 px-5 py-3 text-center"
+      }
+    >
+      {accent && <span className="absolute left-0 top-0 h-full w-0.5 bg-signal" />}
+      <span className={accent ? "font-mono text-sm text-signal" : "font-mono text-sm text-text"}>{label}</span>
     </div>
   );
 }
@@ -17,52 +25,39 @@ export default function Telecom() {
   return (
     <section id="telecom" className="border-b border-border">
       <div className="mx-auto max-w-6xl px-6 py-24">
-        <SectionHeading
-          index="06"
-          command="trace ./telecom-stack"
-          title="Telecom & API Integration"
-        />
+        <SectionHeading title="Telecom & API integration" eyebrow="From client request to protocol layer" />
         <p className="max-w-2xl text-muted leading-relaxed mb-12">
-          A simplified view of how a request travels from the client through
-          the API layer into backend logic that speaks directly to
-          telecommunications protocols.
+          A simplified view of how a request travels from the client through the API layer into backend logic that speaks directly to telecommunications protocols.
         </p>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ staggerChildren: 0.12 }}
-          className="flex flex-col items-center gap-3 max-w-md mx-auto"
-        >
-          <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full">
-            <Node label="CLIENT" />
+        <div className="flex flex-col items-center max-w-md mx-auto">
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.4 }} className="w-full">
+            <Node label="Client" />
           </motion.div>
-          <span className="text-muted2 font-mono">│</span>
-          <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full">
+          <FlowLine height={28} />
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.4, delay: 0.08 }} className="w-full">
             <Node label="REST API" />
           </motion.div>
-          <span className="text-muted2 font-mono">│</span>
-          <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full">
-            <div className="rounded-md border border-accent/40 bg-accent/10 px-5 py-3 font-mono text-sm text-accent text-center">
-              BACKEND
-            </div>
+          <FlowLine height={28} />
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.4, delay: 0.16 }} className="w-full">
+            <Node label="Backend" accent />
           </motion.div>
+          <FlowLine height={20} />
 
-          <div className="w-full mt-4 grid grid-cols-2 gap-3">
-            {PROTOCOLS.map((p, i) => (
-              <motion.div
-                key={p}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-              >
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={{ show: { transition: { staggerChildren: 0.08 } } }}
+            className="w-full grid grid-cols-2 sm:grid-cols-4 gap-3"
+          >
+            {PROTOCOLS.map((p) => (
+              <motion.div key={p} variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
                 <Node label={p} />
               </motion.div>
             ))}
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
