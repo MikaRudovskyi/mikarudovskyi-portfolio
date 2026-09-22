@@ -25,7 +25,7 @@ const SITE_URL = "https://mykhailorudovskyi.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Mykhailo Rudovskyi — Full-Stack Engineer | Support Engineer | Telecom",
+  title: "Mykhailo Rudovskyi - Portfolio",
   description:
     "Portfolio of Mykhailo Rudovskyi — Full-Stack Engineer and Support Engineer with a background in backend development, APIs, software architecture and telecommunications (SIP, RTP, SMPP, VoIP).",
   openGraph: {
