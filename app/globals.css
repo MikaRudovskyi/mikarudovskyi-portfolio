@@ -210,6 +210,200 @@ button:focus-visible {
   transform-origin: center;
 }
 
+/* === Timeline (Experience / Education) accents === */
+
+.timeline-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.timeline-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--color-signal), var(--color-magenta));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s ease;
+}
+
+.timeline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.1rem 0.45rem;
+  font-family: var(--font-mono);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.timeline-chip.is-current {
+  border-color: color-mix(in srgb, var(--color-signal) 45%, transparent);
+  box-shadow: 0 0 12px -4px color-mix(in srgb, var(--color-signal) 70%, transparent);
+}
+
+/* === Decrypt / tilt-card / circuit timeline === */
+
+.tilt-card {
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: linear-gradient(180deg, var(--color-surface), var(--color-surface2));
+  overflow: hidden;
+  will-change: transform;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tilt-card:hover {
+  border-color: color-mix(in srgb, var(--color-signal) 45%, var(--color-border));
+  box-shadow:
+    0 20px 40px -22px rgba(0, 0, 0, 0.6),
+    0 0 24px -8px color-mix(in srgb, var(--color-signal) 45%, transparent);
+}
+
+.tilt-card-spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    280px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    color-mix(in srgb, var(--color-signal) 16%, transparent),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tilt-card:hover .tilt-card-spotlight {
+  opacity: 1;
+}
+
+.tilt-card-content {
+  position: relative;
+  padding: 1.5rem 1.75rem;
+}
+
+/* circuit timeline: single source of truth for alignment */
+
+.timeline {
+  --gutter: 2.75rem;
+  --line-w: 2px;
+  --node-size: 18px;
+  position: relative;
+  padding-left: var(--gutter);
+}
+
+@keyframes busFlow {
+  0%   { background-position: 0 -120px; }
+  100% { background-position: 0 120px; }
+}
+
+.timeline-bus {
+  position: absolute;
+  left: calc(var(--gutter) / 2 - var(--line-w) / 2);
+  width: var(--line-w);
+  background-color: var(--color-border);
+  overflow: hidden;
+  transform-origin: top;
+}
+
+.timeline-bus::before {
+  content: "";
+  position: absolute;
+  inset: -120px 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 14px,
+    color-mix(in srgb, var(--color-signal) 90%, transparent) 20px,
+    transparent 26px
+  );
+  animation: busFlow 2.4s linear infinite;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-signal) 70%, transparent));
+}
+
+/* === Education: radar-node timeline (distinct from Experience's PCB style) === */
+
+@keyframes locatorRadarSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes locatorPingOnce {
+  0%   { transform: scale(0.5); opacity: 0.9; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.locator-node {
+  position: absolute;
+  left: calc(-1 * (var(--gutter) / 2) - (var(--node-size) / 2));
+  top: 0.35rem;
+  width: var(--node-size);
+  height: var(--node-size);
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  background: var(--color-surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.locator-node::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    from 0deg,
+    color-mix(in srgb, var(--color-signal) 75%, transparent),
+    transparent 30%,
+    transparent
+  );
+  animation: locatorRadarSpin 2.8s linear infinite;
+}
+
+.locator-node-core {
+  position: relative;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: currentColor;
+  box-shadow: 0 0 6px 2px currentColor;
+  z-index: 1;
+}
+
+.locator-node-ping {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  opacity: 0;
+  animation: locatorPingOnce 1s ease-out 1;
+  animation-delay: var(--ping-delay, 0s);
+}
+
+.locator-node.is-current {
+  box-shadow: 0 0 12px -2px color-mix(in srgb, var(--color-signal) 70%, transparent);
+}
+
+.locator-stub {
+  position: absolute;
+  left: calc(-1 * (var(--gutter) / 2) + (var(--node-size) / 2));
+  top: calc(0.35rem + (var(--node-size) / 2) - 0.5px);
+  width: calc(var(--gutter) / 2 - (var(--node-size) / 2));
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    to right,
+    currentColor 0 3px,
+    transparent 3px 6px
+  );
+  opacity: 0.6;
+}
+
 /* === Cyberpunk HUD cursor === */
 
 @keyframes hudSpin {
