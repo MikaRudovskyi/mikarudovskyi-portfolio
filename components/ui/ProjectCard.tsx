@@ -1,13 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Github, ExternalLink, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/data/projects";
 import HudCorners from "@/components/ui/HudCorners";
+import DecryptText from "@/components/ui/DecryptText";
 
 export default function ProjectCard({ project }: { project: Project }) {
+  const [accessed, setAccessed] = useState(false);
+  const [booting, setBooting] = useState(false);
+
   const cardClass = project.featured
     ? "group relative flex flex-col overflow-hidden rounded-lg border bg-surface transition-colors neon-border-signal md:col-span-2 bg-gradient-to-b from-surface to-surface2"
     : "group relative flex flex-col overflow-hidden rounded-lg border bg-surface transition-colors border-border hover:border-borderHover";
@@ -16,12 +21,20 @@ export default function ProjectCard({ project }: { project: Project }) {
     ? "(min-width: 1024px) 1120px, 100vw"
     : "(min-width: 1024px) 544px, 100vw";
 
+  function handleEnter() {
+    if (accessed) return;
+    setAccessed(true);
+    setBooting(true);
+    setTimeout(() => setBooting(false), 1300);
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5 }}
+      onMouseEnter={handleEnter}
       className={cn(cardClass)}
     >
       <HudCorners />
@@ -33,7 +46,10 @@ export default function ProjectCard({ project }: { project: Project }) {
         <span className="ml-2 font-mono text-xs text-muted2">{project.slug}.ts</span>
         {project.featured && (
           <span className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-signal/30 bg-signal/10 px-2.5 py-0.5 text-xs text-signal">
-            <span className="h-1.5 w-1.5 rounded-full bg-signal" />
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-60" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
+            </span>
             Featured
           </span>
         )}
@@ -48,6 +64,21 @@ export default function ProjectCard({ project }: { project: Project }) {
           quality={90}
           className="object-cover object-top transition-[filter] duration-300 group-hover:[filter:drop-shadow(2px_0_0_rgba(255,46,122,0.55))_drop-shadow(-2px_0_0_rgba(69,214,194,0.55))]"
         />
+
+        <div className={cn("project-boot-overlay", booting && "is-active")}>
+          <div className="project-boot-scanline" />
+          <div className="space-y-1 font-mono text-[11px] text-signal">
+            <p>
+              <DecryptText text="> mounting asset..." trigger={accessed} duration={350} />
+            </p>
+            <p>
+              <DecryptText text="> integrity check: OK" trigger={accessed} duration={450} />
+            </p>
+            <p>
+              <DecryptText text={`> access granted: ${project.slug}`} trigger={accessed} duration={550} />
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col p-6 md:p-7">
