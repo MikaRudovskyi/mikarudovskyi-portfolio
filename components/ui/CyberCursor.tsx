@@ -1,16 +1,25 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+
+const RING_SMOOTHING_MS = 50;
 
 export default function CyberCursor() {
   const dotRef = useRef<HTMLSpanElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const coordsRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   const mouse = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
   const active = useRef(false);
   const rafId = useRef<number | null>(null);
+  const lastTime = useRef<number | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
@@ -38,13 +47,22 @@ export default function CyberCursor() {
       setVisible(false);
     }
 
-    function tick() {
+    function tick(timestamp: number) {
+      if (lastTime.current === null) {
+        lastTime.current = timestamp;
+      }
+      const dt = timestamp - lastTime.current;
+      lastTime.current = timestamp;
+
+      // коефіцієнт згладжування, незалежний від частоти кадрів
+      const smoothing = 1 - Math.exp(-dt / RING_SMOOTHING_MS);
+
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${mouse.current.x}px, ${mouse.current.y}px, 0) translate(-50%, -50%)`;
       }
 
-      ring.current.x += (mouse.current.x - ring.current.x) * 0.2;
-      ring.current.y += (mouse.current.y - ring.current.y) * 0.2;
+      ring.current.x += (mouse.current.x - ring.current.x) * smoothing;
+      ring.current.y += (mouse.current.y - ring.current.y) * smoothing;
 
       if (ringRef.current) {
         ringRef.current.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) translate(-50%, -50%)`;
@@ -65,10 +83,11 @@ export default function CyberCursor() {
       window.removeEventListener("mousemove", handleMove);
       document.removeEventListener("mouseleave", handleLeave);
       if (rafId.current) cancelAnimationFrame(rafId.current);
+      lastTime.current = null;
     };
   }, []);
 
-  return (
+  const cursorElements = (
     <>
       <span ref={dotRef} className="hud-cursor-dot" style={{ opacity: 0 }} />
 
@@ -86,4 +105,8 @@ export default function CyberCursor() {
       <div ref={coordsRef} className="hud-cursor-coords" style={{ opacity: 0 }} />
     </>
   );
+
+  if (!mounted) return null;
+
+  return createPortal(cursorElements, document.body);
 }
