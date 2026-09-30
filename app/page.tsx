@@ -5,7 +5,7 @@ import About from "@/components/sections/About";
 import Experience from "@/components/sections/Experience";
 import Education from "@/components/sections/Education";
 import Languages from "@/components/sections/Languages";
-import TechStack from "@/components/sections/TechStack";
+import SkillGraph from "@/components/sections/SkillGraph";
 import Telecom from "@/components/sections/Telecom";
 import Architecture from "@/components/sections/Architecture";
 import Projects from "@/components/sections/Projects";
@@ -24,7 +24,7 @@ export default function Home() {
           <Experience />
           <Education />
           <Languages />
-          <TechStack />
+          <SkillGraph />
           <Telecom />
           <Architecture />
           <Projects />

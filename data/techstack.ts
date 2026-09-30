@@ -38,6 +38,6 @@ export const techStack: TechCategory[] = [
 ];
 
 export const designTools: TechCategory = {
-  title: "Tools / Design",
+  title: "Design",
   items: ["Photoshop"],
 };
