@@ -9,6 +9,7 @@ const LEVEL_SIGNAL: Record<string, number> = {
   Native: 100,
   Fluent: 90,
   Advanced: 75,
+  "Upper-Intermediate": 70,
   Intermediate: 55,
   Beginner: 30,
 };
